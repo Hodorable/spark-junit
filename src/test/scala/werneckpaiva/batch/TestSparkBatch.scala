@@ -1,4 +1,4 @@
-package werneckpaiva
+package werneckpaiva.batch
 
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
@@ -14,7 +14,7 @@ object TestExample {
   @BeforeClass
   def setup(): Unit = {
     val sparkConf = new SparkConf()
-      .setAppName("Test Spark")
+      .setAppName("Test Spark Batch")
       .setMaster("local[*]")
     sc = new SparkContext(sparkConf)
   }
