@@ -15,16 +15,15 @@ object TestExample {
   var sc: SparkContext = null
 
   @BeforeClass
-  def setup(): Unit = {
+  def before(): Unit = {
     val sparkConf = new SparkConf()
       .setAppName("Test Spark Batch")
       .setMaster("local")
     sc = new SparkContext(sparkConf)
-    
   }
 
   @AfterClass
-  def cleanup(): Unit = {
+  def after(): Unit = {
     sc.stop()
   }
 }
