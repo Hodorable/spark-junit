@@ -1,12 +1,15 @@
-package werneckpaiva.batch
+package werneckpaiva.spark.test.sample
 
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.DataFrame
 import org.junit.AfterClass
 import org.junit.Assert._
 import org.junit.BeforeClass
 import org.junit.Test
+
+import werneckpaiva.streaming.sample.BatchOperations;
 
 object TestExample {
   var sc: SparkContext = null
@@ -15,8 +18,9 @@ object TestExample {
   def setup(): Unit = {
     val sparkConf = new SparkConf()
       .setAppName("Test Spark Batch")
-      .setMaster("local[*]")
+      .setMaster("local")
     sc = new SparkContext(sparkConf)
+    
   }
 
   @AfterClass
@@ -26,23 +30,22 @@ object TestExample {
 }
 
 class TestExample {
+  import TestExample._
+  val sql = new SQLContext(sc)
+  import sql.implicits._
 
   @Test
-  def testCountNumbers(): Unit = {
-    val sql = new SQLContext(TestExample.sc)
-    import sql.implicits._
+  def testCountPairNumbers(): Unit = {
+    val df =  sc.parallelize(List(1, 2, 3, 4, 5, 6)).toDF
 
-    val numList = List(1, 2, 3, 4, 5)
-    val df = TestExample.sc.parallelize(numList).toDF
-    assertEquals(5, df.count)
+    val count = BatchOperations.countPairs(df)
+
+    assertEquals(3, count)
   }
 
   @Test
   def testSaveMultipleTypes():Unit = {
-    val sql = new SQLContext(TestExample.sc)
-    import sql.implicits._
-
-    val jsonRDD = TestExample.sc.parallelize(Seq(""" 
+    val jsonRDD = sc.parallelize(Seq(""" 
       { "isActive": false,
         "balance": 1431.73,
         "picture": "http://placehold.it/32x32",
@@ -64,10 +67,9 @@ class TestExample {
         "eyeColor": "blue"
       }""")
     )
-
     val df = sql.read.json(jsonRDD)
-    assertEquals(df.count, 3)
-    val filteredDf = df.filter(df("eyeColor")==="blue")
-    assertEquals(filteredDf.count, 2)
+
+    val count = BatchOperations.countBlueEyes(df)
+    assertEquals(count, 2)
   }
 }

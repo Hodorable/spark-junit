@@ -1,4 +1,4 @@
-package werneckpaiva.streaming
+package werneckpaiva.streaming.sample
 
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.Duration

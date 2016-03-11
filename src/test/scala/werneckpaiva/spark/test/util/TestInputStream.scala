@@ -1,4 +1,4 @@
-package werneckpaiva.util
+package werneckpaiva.spark.test.util
 
 import scala.reflect.ClassTag
 import org.apache.spark.streaming.StreamingContext
