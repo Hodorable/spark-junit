@@ -9,7 +9,7 @@ import org.apache.spark.ClockWrapper
 import org.apache.spark.streaming.Seconds
 import java.nio.file.Files
 import scala.reflect.ClassTag
-import werneckpaiva.spark.test.util.TestInputStream
+import werneckpaiva.spark.test.util.TestInputDStream
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Queue
 import org.apache.spark.streaming.dstream.DStream
@@ -41,9 +41,9 @@ class BaseTestSparkStreaming {
     sc.stop()
   }
 
-  def makeStream[T:ClassTag]():(Queue[RDD[T]], TestInputStream[T]) = {
+  def makeStream[T:ClassTag]():(Queue[RDD[T]], TestInputDStream[T]) = {
     val lines = new Queue[RDD[T]]()
-    val stream = new TestInputStream[T](ssc, lines, sc.makeRDD(Seq[T](), 1))
+    val stream = new TestInputDStream[T](ssc, lines, sc.makeRDD(Seq[T](), 1))
     (lines, stream)
   }
   

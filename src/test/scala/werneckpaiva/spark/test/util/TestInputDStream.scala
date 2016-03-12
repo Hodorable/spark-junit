@@ -1,19 +1,18 @@
 package werneckpaiva.spark.test.util
 
-import scala.reflect.ClassTag
-import org.apache.spark.streaming.StreamingContext
-import scala.collection.mutable.Queue
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.Queue
+import scala.reflect.ClassTag
+
 import org.apache.spark.rdd.RDD
-import org.apache.spark.streaming.dstream.InputDStream
+import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.Time
+import org.apache.spark.streaming.dstream.InputDStream
 
 
-class TestInputStream[T: ClassTag](
-    ssc: StreamingContext, 
-    val queue: Queue[RDD[T]],
-    defaultRDD: RDD[T])
-  extends InputDStream[T](ssc) {
+class TestInputDStream[T:ClassTag](
+    ssc: StreamingContext, queue: Queue[RDD[T]], defaultRDD: RDD[T])
+      extends InputDStream[T](ssc) {
 
   def start() {}
 
